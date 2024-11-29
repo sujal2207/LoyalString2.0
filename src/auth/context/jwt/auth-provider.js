@@ -1,12 +1,11 @@
 'use client';
-
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, useReducer, useCallback } from 'react';
-
-import axios, { endpoints } from 'src/utils/axios';
-
+import axios  from 'src/utils/axios';
+import { setSession } from './utils';
 import { AuthContext } from './auth-context';
-import { setSession, isValidToken } from './utils';
+import {  HOST_API } from '../../../config-global';
+import { enqueueSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 /**
@@ -51,28 +50,28 @@ const reducer = (state, action) => {
 
 // ----------------------------------------------------------------------
 
-const STORAGE_KEY = 'accessToken';
+const JWT = 'jwt';
+const JWT_REFRESH = 'jwtRefresh';
 
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = sessionStorage.getItem(STORAGE_KEY);
-
-      if (accessToken && isValidToken(accessToken)) {
-        setSession(accessToken);
-
-        const response = await axios.get(endpoints.auth.me);
-
-        const { user } = response.data;
-
+      const jwt = sessionStorage.getItem(JWT);
+      const jwtRefresh = sessionStorage.getItem(JWT_REFRESH);
+      if (jwt && jwtRefresh) {
+        setSession(jwt, jwtRefresh);
+        const url = `${HOST_API}/api/auth/me`;
+        const response = await axios.get(url);
+        const user = response?.data;
         dispatch({
           type: 'INITIAL',
           payload: {
             user: {
               ...user,
-              accessToken,
+              jwt,
+              jwtRefresh,
             },
           },
         });
@@ -100,54 +99,59 @@ export function AuthProvider({ children }) {
   }, [initialize]);
 
   // LOGIN
-  const login = useCallback(async (email, password) => {
+  const login = useCallback(async (username, password) => {
     const data = {
-      email,
+      username,
       password,
     };
-
-    const response = await axios.post(endpoints.auth.login, data);
-
-    const { accessToken, user } = response.data;
-
-    setSession(accessToken);
-
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user: {
-          ...user,
-          accessToken,
+    const URL = `${HOST_API}/api/auth/login`;
+    await axios.post(URL, data).then((res) => {
+      const user = res?.data?.data;
+      enqueueSnackbar('Login Successfully');
+      const { jwt, jwtRefresh } = user?.other_info;
+      setSession(jwt, jwtRefresh);
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          user: {
+            ...user,
+            jwt,
+            jwtRefresh,
+          },
         },
-      },
+      });
+    }).catch((err) => {
+      enqueueSnackbar(`${err.message}`, { variant: 'error' });
+      console.log(err);
     });
   }, []);
 
   // REGISTER
-  const register = useCallback(async (email, password, firstName, lastName) => {
-    const data = {
-      email,
-      password,
-      firstName,
-      lastName,
-    };
+  const register = useCallback(async (data) => {
+    try {
+      const response = await axios.post(`${HOST_API}/api/auth/register`, data);
+      const { accessToken, user } = response.data;
 
-    const response = await axios.post(endpoints.auth.register, data);
+      // You can uncomment these if required for further functionality
+      // sessionStorage.setItem(STORAGE_KEY, accessToken);
+      // dispatch({
+      //   type: 'REGISTER',
+      //   payload: {
+      //     user: {
+      //       ...user,
+      //       accessToken,
+      //     },
+      //   },
+      // });
 
-    const { accessToken, user } = response.data;
-
-    sessionStorage.setItem(STORAGE_KEY, accessToken);
-
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        user: {
-          ...user,
-          accessToken,
-        },
-      },
-    });
+      return { success: true, user, accessToken };
+    } catch (error) {
+      console.error(error);
+      const errorMessage = error.response?.data?.message || error.message || 'Registration failed.';
+      return { success: false, error: errorMessage };
+    }
   }, []);
+
 
   // LOGOUT
   const logout = useCallback(async () => {
@@ -160,9 +164,7 @@ export function AuthProvider({ children }) {
   // ----------------------------------------------------------------------
 
   const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
-
   const status = state.loading ? 'loading' : checkAuthenticated;
-
   const memoizedValue = useMemo(
     () => ({
       user: state.user,
@@ -171,13 +173,12 @@ export function AuthProvider({ children }) {
       authenticated: status === 'authenticated',
       unauthenticated: status === 'unauthenticated',
       //
-      login,
-      register,
+      login, register,
       logout,
+      initialize,
     }),
-    [login, logout, register, state.user, status]
+    [login, register, logout, state.user, status, initialize],
   );
-
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
 }
 
