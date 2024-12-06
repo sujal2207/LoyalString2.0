@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
-
-import { _invoices } from 'src/_mock/_invoice';
-
-import { InvoiceEditView } from 'src/sections/invoice/view';
+import { _userList } from 'src/_mock/_user';
+import { InvoiceEditView } from '../../../../../sections/invoice/view';
 
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Dashboard: Invoice Edit',
+  title: 'Dashboard: Invoice',
 };
 
 export default function InvoiceEditPage({ params }) {
@@ -17,8 +15,8 @@ export default function InvoiceEditPage({ params }) {
 }
 
 export async function generateStaticParams() {
-  return _invoices.map((invoice) => ({
-    id: invoice.id,
+  return _userList.map((user) => ({
+    id: user.id,
   }));
 }
 

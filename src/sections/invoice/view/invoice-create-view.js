@@ -1,12 +1,8 @@
 'use client';
-
 import Container from '@mui/material/Container';
-
 import { paths } from 'src/routes/paths';
-
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-
 import InvoiceNewEditForm from '../invoice-new-edit-form';
 
 // ----------------------------------------------------------------------
@@ -17,7 +13,7 @@ export default function InvoiceCreateView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Create a new invoice"
+        heading='Create a new Invoice'
         links={[
           {
             name: 'Dashboard',
@@ -25,11 +21,9 @@ export default function InvoiceCreateView() {
           },
           {
             name: 'Invoice',
-            href: paths.dashboard.invoice.root,
+            href: paths.dashboard.invoice.list,
           },
-          {
-            name: 'New Invoice',
-          },
+          { name: 'New Invoice' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

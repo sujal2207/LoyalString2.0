@@ -1,16 +1,10 @@
 'use client';
-
 import PropTypes from 'prop-types';
-
 import Container from '@mui/material/Container';
-
 import { paths } from 'src/routes/paths';
-
-import { _invoices } from 'src/_mock';
-
+import { _userList } from 'src/_mock';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-
 import InvoiceNewEditForm from '../invoice-new-edit-form';
 
 // ----------------------------------------------------------------------
@@ -18,12 +12,12 @@ import InvoiceNewEditForm from '../invoice-new-edit-form';
 export default function InvoiceEditView({ id }) {
   const settings = useSettingsContext();
 
-  const currentInvoice = _invoices.find((invoice) => invoice.id === id);
+  const currentInvoice = _userList.find((user) => user.id === id);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading='Edit'
         links={[
           {
             name: 'Dashboard',
@@ -31,9 +25,9 @@ export default function InvoiceEditView({ id }) {
           },
           {
             name: 'Invoice',
-            href: paths.dashboard.invoice.root,
+            href: paths.dashboard.invoice.list,
           },
-          { name: currentInvoice?.invoiceNumber },
+          { name: currentInvoice?.name },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

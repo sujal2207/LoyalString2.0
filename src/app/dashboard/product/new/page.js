@@ -1,9 +1,9 @@
-import { ProductCreateView } from 'src/sections/product/view';
+import { ProductCreateView } from '../../../../sections/product/view';
 
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Dashboard: Create a new product',
+  title: 'Dashboard: Create a new Product',
 };
 
 export default function ProductCreatePage() {

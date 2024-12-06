@@ -1,22 +1,14 @@
 import PropTypes from 'prop-types';
-
-import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
-
 import { useBoolean } from 'src/hooks/use-boolean';
-
-import { fCurrency } from 'src/utils/format-number';
-import { fDate, fTime } from 'src/utils/format-time';
-
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
@@ -24,89 +16,45 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
-export default function InvoiceTableRow({
-  row,
-  selected,
-  onSelectRow,
-  onViewRow,
-  onEditRow,
-  onDeleteRow,
-}) {
-  const { sent, invoiceNumber, createDate, dueDate, status, invoiceTo, totalAmount } = row;
-
+export default function InvoiceTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+  const { name, avatarUrl, company, role, status, email, phoneNumber } = row;
   const confirm = useBoolean();
-
   const popover = usePopover();
 
   return (
     <>
       <TableRow hover selected={selected}>
-        <TableCell padding="checkbox">
+        <TableCell padding='checkbox'>
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={invoiceTo.name} sx={{ mr: 2 }}>
-            {invoiceTo.name.charAt(0).toUpperCase()}
-          </Avatar>
+          <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
 
           <ListItemText
-            disableTypography
-            primary={
-              <Typography variant="body2" noWrap>
-                {invoiceTo.name}
-              </Typography>
-            }
-            secondary={
-              <Link
-                noWrap
-                variant="body2"
-                onClick={onViewRow}
-                sx={{ color: 'text.disabled', cursor: 'pointer' }}
-              >
-                {invoiceNumber}
-              </Link>
-            }
-          />
-        </TableCell>
-
-        <TableCell>
-          <ListItemText
-            primary={fDate(createDate)}
-            secondary={fTime(createDate)}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+            primary={name}
+            secondary={email}
+            primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
-              mt: 0.5,
               component: 'span',
-              typography: 'caption',
+              color: 'text.disabled',
             }}
           />
         </TableCell>
 
-        <TableCell>
-          <ListItemText
-            primary={fDate(dueDate)}
-            secondary={fTime(dueDate)}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
-        </TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber}</TableCell>
 
-        <TableCell>{fCurrency(totalAmount)}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{company}</TableCell>
 
-        <TableCell align="center">{sent}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
 
         <TableCell>
           <Label
-            variant="soft"
+            variant='soft'
             color={
-              (status === 'paid' && 'success') ||
+              (status === 'active' && 'success') ||
               (status === 'pending' && 'warning') ||
-              (status === 'overdue' && 'error') ||
+              (status === 'banned' && 'error') ||
               'default'
             }
           >
@@ -114,9 +62,9 @@ export default function InvoiceTableRow({
           </Label>
         </TableCell>
 
-        <TableCell align="right" sx={{ px: 1 }}>
+        <TableCell align='right' sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-            <Iconify icon="eva:more-vertical-fill" />
+            <Iconify icon='eva:more-vertical-fill' />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -124,17 +72,18 @@ export default function InvoiceTableRow({
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
-        arrow="right-top"
-        sx={{ width: 160 }}
+        arrow='right-top'
+        sx={{ width: 140 }}
       >
         <MenuItem
           onClick={() => {
-            onViewRow();
+            confirm.onTrue();
             popover.onClose();
           }}
+          sx={{ color: 'error.main' }}
         >
-          <Iconify icon="solar:eye-bold" />
-          View
+          <Iconify icon='solar:trash-bin-trash-bold' />
+          Delete
         </MenuItem>
 
         <MenuItem
@@ -143,31 +92,18 @@ export default function InvoiceTableRow({
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:pen-bold" />
+          <Iconify icon='solar:pen-bold' />
           Edit
-        </MenuItem>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem
-          onClick={() => {
-            confirm.onTrue();
-            popover.onClose();
-          }}
-          sx={{ color: 'error.main' }}
-        >
-          <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
         </MenuItem>
       </CustomPopover>
 
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
-        content="Are you sure want to delete?"
+        title='Delete'
+        content='Are you sure want to delete?'
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
+          <Button variant='contained' color='error' onClick={onDeleteRow}>
             Delete
           </Button>
         }
@@ -180,7 +116,6 @@ InvoiceTableRow.propTypes = {
   onDeleteRow: PropTypes.func,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
-  onViewRow: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
 };

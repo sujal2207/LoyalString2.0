@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useCallback } from 'react';
-
 import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,52 +10,34 @@ import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { formHelperTextClasses } from '@mui/material/FormHelperText';
-
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
 export default function InvoiceTableToolbar({
-  filters,
-  onFilters,
-  //
-  dateError,
-  serviceOptions,
-}) {
+                                              filters,
+                                              onFilters,
+                                              //
+                                              roleOptions,
+                                            }) {
   const popover = usePopover();
 
   const handleFilterName = useCallback(
     (event) => {
       onFilters('name', event.target.value);
     },
-    [onFilters]
+    [onFilters],
   );
 
-  const handleFilterService = useCallback(
+  const handleFilterRole = useCallback(
     (event) => {
       onFilters(
-        'service',
-        typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value
+        'role',
+        typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value,
       );
     },
-    [onFilters]
-  );
-
-  const handleFilterStartDate = useCallback(
-    (newValue) => {
-      onFilters('startDate', newValue);
-    },
-    [onFilters]
-  );
-
-  const handleFilterEndDate = useCallback(
-    (newValue) => {
-      onFilters('endDate', newValue);
-    },
-    [onFilters]
+    [onFilters],
   );
 
   return (
@@ -76,75 +57,49 @@ export default function InvoiceTableToolbar({
         <FormControl
           sx={{
             flexShrink: 0,
-            width: { xs: 1, md: 180 },
+            width: { xs: 1, md: 200 },
           }}
         >
-          <InputLabel>Service</InputLabel>
+          <InputLabel>Role</InputLabel>
 
           <Select
             multiple
-            value={filters.service}
-            onChange={handleFilterService}
-            input={<OutlinedInput label="Service" />}
+            value={filters.role}
+            onChange={handleFilterRole}
+            input={<OutlinedInput label='Role' />}
             renderValue={(selected) => selected.map((value) => value).join(', ')}
-            sx={{ textTransform: 'capitalize' }}
+            MenuProps={{
+              PaperProps: {
+                sx: { maxHeight: 240 },
+              },
+            }}
           >
-            {serviceOptions.map((option) => (
+            {roleOptions.map((option) => (
               <MenuItem key={option} value={option}>
-                <Checkbox disableRipple size="small" checked={filters.service.includes(option)} />
+                <Checkbox disableRipple size='small' checked={filters.role.includes(option)} />
                 {option}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
 
-        <DatePicker
-          label="Start date"
-          value={filters.startDate}
-          onChange={handleFilterStartDate}
-          slotProps={{ textField: { fullWidth: true } }}
-          sx={{
-            maxWidth: { md: 180 },
-          }}
-        />
-
-        <DatePicker
-          label="End date"
-          value={filters.endDate}
-          onChange={handleFilterEndDate}
-          slotProps={{
-            textField: {
-              fullWidth: true,
-              error: dateError,
-              helperText: dateError && 'End date must be later than start date',
-            },
-          }}
-          sx={{
-            maxWidth: { md: 180 },
-            [`& .${formHelperTextClasses.root}`]: {
-              position: { md: 'absolute' },
-              bottom: { md: -40 },
-            },
-          }}
-        />
-
-        <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
+        <Stack direction='row' alignItems='center' spacing={2} flexGrow={1} sx={{ width: 1 }}>
           <TextField
             fullWidth
             value={filters.name}
             onChange={handleFilterName}
-            placeholder="Search customer or invoice number..."
+            placeholder='Search...'
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                <InputAdornment position='start'>
+                  <Iconify icon='eva:search-fill' sx={{ color: 'text.disabled' }} />
                 </InputAdornment>
               ),
             }}
           />
 
           <IconButton onClick={popover.onOpen}>
-            <Iconify icon="eva:more-vertical-fill" />
+            <Iconify icon='eva:more-vertical-fill' />
           </IconButton>
         </Stack>
       </Stack>
@@ -152,7 +107,7 @@ export default function InvoiceTableToolbar({
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
-        arrow="right-top"
+        arrow='right-top'
         sx={{ width: 140 }}
       >
         <MenuItem
@@ -160,7 +115,7 @@ export default function InvoiceTableToolbar({
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:printer-minimalistic-bold" />
+          <Iconify icon='solar:printer-minimalistic-bold' />
           Print
         </MenuItem>
 
@@ -169,7 +124,7 @@ export default function InvoiceTableToolbar({
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:import-bold" />
+          <Iconify icon='solar:import-bold' />
           Import
         </MenuItem>
 
@@ -178,7 +133,7 @@ export default function InvoiceTableToolbar({
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:export-bold" />
+          <Iconify icon='solar:export-bold' />
           Export
         </MenuItem>
       </CustomPopover>
@@ -187,8 +142,7 @@ export default function InvoiceTableToolbar({
 }
 
 InvoiceTableToolbar.propTypes = {
-  dateError: PropTypes.bool,
   filters: PropTypes.object,
   onFilters: PropTypes.func,
-  serviceOptions: PropTypes.array,
+  roleOptions: PropTypes.array,
 };

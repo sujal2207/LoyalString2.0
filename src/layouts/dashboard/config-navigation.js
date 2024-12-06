@@ -1,10 +1,6 @@
 import { useMemo } from 'react';
-
 import { paths } from 'src/routes/paths';
-
 import { useTranslate } from 'src/locales';
-
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 
@@ -19,30 +15,47 @@ const icon = (name) => (
 );
 
 const ICONS = {
-  job: icon('ic_job'),
-  blog: icon('ic_blog'),
-  chat: icon('ic_chat'),
-  mail: icon('ic_mail'),
-  user: icon('ic_user'),
-  file: icon('ic_file'),
-  lock: icon('ic_lock'),
-  tour: icon('ic_tour'),
-  order: icon('ic_order'),
-  label: icon('ic_label'),
-  blank: icon('ic_blank'),
-  kanban: icon('ic_kanban'),
-  folder: icon('ic_folder'),
-  banking: icon('ic_banking'),
-  booking: icon('ic_booking'),
-  invoice: icon('ic_invoice'),
-  product: icon('ic_product'),
-  calendar: icon('ic_calendar'),
-  disabled: icon('ic_disabled'),
   external: icon('ic_external'),
   menuItem: icon('ic_menu_item'),
   ecommerce: icon('ic_ecommerce'),
   analytics: icon('ic_analytics'),
   dashboard: icon('ic_dashboard'),
+  company: <Iconify icon='mdi:company' width={24} />,
+  branch: <Iconify icon='proicons:branch' width={24} />,
+  counter: <Iconify icon='mdi:counter' width={24} />,
+  department: <Iconify icon='mingcute:department-line' width={24} />,
+  roles: <Iconify icon='oui:app-users-roles' width={24} />,
+  employee: <Iconify icon='clarity:employee-line' width={24} />,
+  bankAccount: <Iconify icon='mdi:bank' width={24} />,
+  devices: <Iconify icon='material-symbols:devices' width={24} />,
+  tax: <Iconify icon='tabler:receipt-tax' width={24} />,
+  rateConversion: <Iconify icon='system-uicons:heart-rate' width={24} />,
+  category: <Iconify icon='material-symbols:category' width={24} />,
+  product: <Iconify icon='carbon:product' width={24} />,
+  design: <Iconify icon='mdi:design' width={24} />,
+  purity: <Iconify icon='mdi:gold' width={24} />,
+  packet: <Iconify icon='mingcute:red-packet-fill' width={24} />,
+  box: <Iconify icon='solar:box-bold' width={24} />,
+  stone: <Iconify icon='game-icons:stone-pile' width={24} />,
+  diamondsizeweightrate: <Iconify icon='material-symbols:diamond' width={24} />,
+  sku: <Iconify icon='mingcute:stock-fill' width={24} />,
+  rates: <Iconify icon='iconamoon:trend-up' width={24} />,
+  collection: <Iconify icon='tdesign:collection' width={24} />,
+  occasion: <Iconify icon='ep:opportunity' width={24} />,
+  purchaseentry: <Iconify icon='carbon:purchase' width={24} />,
+  createpacket: <Iconify icon='arcticons:packeta' width={24} />,
+  addbulkstocknew: <Iconify icon='ix:document-bulk' width={24} />,
+  addsinglestock: <Iconify icon='material-symbols-light:stockpot-sharp' width={24} />,
+  invoice: <Iconify icon='hugeicons:invoice-02' width={24} />,
+  makepayments: <Iconify icon='material-symbols:payments-sharp' width={24} />,
+  receivepayments: <Iconify icon='hugeicons:dollar-receive-02' width={24} />,
+  creditnotesalereturn: <Iconify icon='gridicons:credit-card' width={24} />,
+  debitnotesalereturn: <Iconify icon='carbon:sales-ops' width={24} />,
+  stocktransfer: <Iconify icon='mdi:transfer' width={24} />,
+  vendortounche: <Iconify icon='material-symbols:connect-without-contact' width={24} />,
+  customertounche: <Iconify icon='streamline:customer-support-1' width={24} />,
+  config: <Iconify icon='icon-park-outline:config' width={24} />,
+  print: <Iconify icon='material-symbols:print' width={24} />,
 };
 
 // ----------------------------------------------------------------------
@@ -52,272 +65,213 @@ export function useNavData() {
 
   const data = useMemo(
     () => [
-      // OVERVIEW
-      // ----------------------------------------------------------------------
       {
-        subheader: t('overview'),
+        subheader: t('user master'),
         items: [
           {
-            title: t('app'),
-            path: paths.dashboard.root,
-            icon: ICONS.dashboard,
+            title: t('Company'),
+            path: paths.dashboard.company.list,
+            icon: ICONS.company,
           },
           {
-            title: t('ecommerce'),
-            path: paths.dashboard.general.ecommerce,
-            icon: ICONS.ecommerce,
+            title: t('Branch'),
+            path: paths.dashboard.branch.list,
+            icon: ICONS.branch,
           },
           {
-            title: t('analytics'),
-            path: paths.dashboard.general.analytics,
-            icon: ICONS.analytics,
+            title: t('Counter'),
+            path: paths.dashboard.counter.list,
+            icon: ICONS.counter,
           },
           {
-            title: t('banking'),
-            path: paths.dashboard.general.banking,
-            icon: ICONS.banking,
+            title: t('Department'),
+            path: paths.dashboard.department.list,
+            icon: ICONS.department,
           },
           {
-            title: t('booking'),
-            path: paths.dashboard.general.booking,
-            icon: ICONS.booking,
+            title: t('Roles'),
+            path: paths.dashboard.roles.list,
+            icon: ICONS.roles,
           },
           {
-            title: t('file'),
-            path: paths.dashboard.general.file,
-            icon: ICONS.file,
+            title: t('Employee'),
+            path: paths.dashboard.employee.list,
+            icon: ICONS.employee,
+          },
+          {
+            title: t('Bank Account'),
+            path: paths.dashboard.bankaccount.list,
+            icon: ICONS.bankAccount,
+          },
+          {
+            title: t('Devices'),
+            path: paths.dashboard.devices.list,
+            icon: ICONS.devices,
+          },
+          {
+            title: t('Tax'),
+            path: paths.dashboard.tax.list,
+            icon: ICONS.tax,
+          },
+          {
+            title: t('Rate Conversion'),
+            path: paths.dashboard.rateconversion.list,
+            icon: ICONS.rateConversion,
           },
         ],
       },
-
-      // MANAGEMENT
-      // ----------------------------------------------------------------------
       {
-        subheader: t('management'),
+        subheader: t('Products Master'),
         items: [
-          // USER
           {
-            title: t('user'),
-            path: paths.dashboard.user.root,
-            icon: ICONS.user,
-            children: [
-              { title: t('profile'), path: paths.dashboard.user.root },
-              { title: t('cards'), path: paths.dashboard.user.cards },
-              { title: t('list'), path: paths.dashboard.user.list },
-              { title: t('create'), path: paths.dashboard.user.new },
-              { title: t('edit'), path: paths.dashboard.user.demo.edit },
-              { title: t('account'), path: paths.dashboard.user.account },
-            ],
+            title: t('Category'),
+            path: paths.dashboard.category.list,
+            icon: ICONS.category,
           },
-
-          // PRODUCT
           {
-            title: t('product'),
-            path: paths.dashboard.product.root,
+            title: t('Product'),
+            path: paths.dashboard.product.list,
             icon: ICONS.product,
-            children: [
-              { title: t('list'), path: paths.dashboard.product.root },
-              {
-                title: t('details'),
-                path: paths.dashboard.product.demo.details,
-              },
-              { title: t('create'), path: paths.dashboard.product.new },
-              { title: t('edit'), path: paths.dashboard.product.demo.edit },
-            ],
           },
-
-          // ORDER
           {
-            title: t('order'),
-            path: paths.dashboard.order.root,
-            icon: ICONS.order,
-            children: [
-              { title: t('list'), path: paths.dashboard.order.root },
-              { title: t('details'), path: paths.dashboard.order.demo.details },
-            ],
+            title: t('Design'),
+            path: paths.dashboard.design.list,
+            icon: ICONS.design,
           },
-
-          // INVOICE
           {
-            title: t('invoice'),
-            path: paths.dashboard.invoice.root,
-            icon: ICONS.invoice,
-            children: [
-              { title: t('list'), path: paths.dashboard.invoice.root },
-              {
-                title: t('details'),
-                path: paths.dashboard.invoice.demo.details,
-              },
-              { title: t('create'), path: paths.dashboard.invoice.new },
-              { title: t('edit'), path: paths.dashboard.invoice.demo.edit },
-            ],
+            title: t('Purity'),
+            path: paths.dashboard.purity.list,
+            icon: ICONS.purity,
           },
-
-          // BLOG
           {
-            title: t('blog'),
-            path: paths.dashboard.post.root,
-            icon: ICONS.blog,
-            children: [
-              { title: t('list'), path: paths.dashboard.post.root },
-              { title: t('details'), path: paths.dashboard.post.demo.details },
-              { title: t('create'), path: paths.dashboard.post.new },
-              { title: t('edit'), path: paths.dashboard.post.demo.edit },
-            ],
+            title: t('Packet'),
+            path: paths.dashboard.packet.list,
+            icon: ICONS.packet,
           },
-
-          // JOB
           {
-            title: t('job'),
-            path: paths.dashboard.job.root,
-            icon: ICONS.job,
-            children: [
-              { title: t('list'), path: paths.dashboard.job.root },
-              { title: t('details'), path: paths.dashboard.job.demo.details },
-              { title: t('create'), path: paths.dashboard.job.new },
-              { title: t('edit'), path: paths.dashboard.job.demo.edit },
-            ],
+            title: t('Box'),
+            path: paths.dashboard.box.list,
+            icon: ICONS.box,
           },
-
-          // TOUR
           {
-            title: t('tour'),
-            path: paths.dashboard.tour.root,
-            icon: ICONS.tour,
-            children: [
-              { title: t('list'), path: paths.dashboard.tour.root },
-              { title: t('details'), path: paths.dashboard.tour.demo.details },
-              { title: t('create'), path: paths.dashboard.tour.new },
-              { title: t('edit'), path: paths.dashboard.tour.demo.edit },
-            ],
+            title: t('Stone'),
+            path: paths.dashboard.stone.list,
+            icon: ICONS.stone,
           },
-
-          // FILE MANAGER
           {
-            title: t('file_manager'),
-            path: paths.dashboard.fileManager,
-            icon: ICONS.folder,
+            title: t('Diamond Size/Weight Rate'),
+            path: paths.dashboard.diamondsizeweightrate.list,
+            icon: ICONS.diamondsizeweightrate,
           },
-
-          // MAIL
           {
-            title: t('mail'),
-            path: paths.dashboard.mail,
-            icon: ICONS.mail,
-            info: <Label color="error">+32</Label>,
+            title: t('SKU'),
+            path: paths.dashboard.sku.list,
+            icon: ICONS.sku,
           },
-
-          // CHAT
           {
-            title: t('chat'),
-            path: paths.dashboard.chat,
-            icon: ICONS.chat,
+            title: t('Rates'),
+            path: paths.dashboard.rates.list,
+            icon: ICONS.rates,
           },
-
-          // CALENDAR
           {
-            title: t('calendar'),
-            path: paths.dashboard.calendar,
-            icon: ICONS.calendar,
+            title: t('Collection'),
+            path: paths.dashboard.collection.list,
+            icon: ICONS.collection,
           },
-
-          // KANBAN
           {
-            title: t('kanban'),
-            path: paths.dashboard.kanban,
-            icon: ICONS.kanban,
+            title: t('Occasion'),
+            path: paths.dashboard.occasion.list,
+            icon: ICONS.occasion,
           },
         ],
       },
-
-      // DEMO MENU STATES
       {
-        subheader: t(t('other_cases')),
+        subheader: t('trading'),
         items: [
           {
-            // default roles : All roles can see this entry.
-            // roles: ['user'] Only users can see this item.
-            // roles: ['admin'] Only admin can see this item.
-            // roles: ['admin', 'manager'] Only admin/manager can see this item.
-            // Reference from 'src/guards/RoleBasedGuard'.
-            title: t('item_by_roles'),
-            path: paths.dashboard.permission,
-            icon: ICONS.lock,
-            roles: ['admin', 'manager'],
-            caption: t('only_admin_can_see_this_item'),
+            title: t('Purchase Entry'),
+            path: paths.dashboard.purchaseentry.list,
+            icon: ICONS.purchaseentry,
           },
           {
-            title: t('menu_level'),
-            path: '#/dashboard/menu_level',
-            icon: ICONS.menuItem,
-            children: [
-              {
-                title: t('menu_level_1a'),
-                path: '#/dashboard/menu_level/menu_level_1a',
-              },
-              {
-                title: t('menu_level_1b'),
-                path: '#/dashboard/menu_level/menu_level_1b',
-                children: [
-                  {
-                    title: t('menu_level_2a'),
-                    path: '#/dashboard/menu_level/menu_level_1b/menu_level_2a',
-                  },
-                  {
-                    title: t('menu_level_2b'),
-                    path: '#/dashboard/menu_level/menu_level_1b/menu_level_2b',
-                    children: [
-                      {
-                        title: t('menu_level_3a'),
-                        path: '#/dashboard/menu_level/menu_level_1b/menu_level_2b/menu_level_3a',
-                      },
-                      {
-                        title: t('menu_level_3b'),
-                        path: '#/dashboard/menu_level/menu_level_1b/menu_level_2b/menu_level_3b',
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
+            title: t('Create Packet'),
+            path: paths.dashboard.createpacket.list,
+            icon: ICONS.createpacket,
           },
           {
-            title: t('item_disabled'),
-            path: '#disabled',
-            icon: ICONS.disabled,
-            disabled: true,
+            title: t('Add Bulk Stock New'),
+            path: paths.dashboard.addbulkstocknew.list,
+            icon: ICONS.addbulkstocknew,
           },
           {
-            title: t('item_label'),
-            path: '#label',
-            icon: ICONS.label,
-            info: (
-              <Label color="info" startIcon={<Iconify icon="solar:bell-bing-bold-duotone" />}>
-                NEW
-              </Label>
-            ),
+            title: t('Add Single Stock'),
+            path: paths.dashboard.addsinglestock.list,
+            icon: ICONS.addsinglestock,
           },
           {
-            title: t('item_caption'),
-            path: '#caption',
-            icon: ICONS.menuItem,
-            caption:
-              'Quisque malesuada placerat nisl. In hac habitasse platea dictumst. Cras id dui. Pellentesque commodo eros a enim. Morbi mollis tellus ac sapien.',
+            title: t('Invoice'),
+            path: paths.dashboard.invoice.list,
+            icon: ICONS.invoice,
           },
           {
-            title: t('item_external_link'),
-            path: 'https://www.google.com/',
-            icon: ICONS.external,
+            title: t('Make Payments'),
+            path: paths.dashboard.makepayments.list,
+            icon: ICONS.makepayments,
           },
           {
-            title: t('blank'),
-            path: paths.dashboard.blank,
-            icon: ICONS.blank,
+            title: t('Receive payments'),
+            path: paths.dashboard.receivepayments.list,
+            icon: ICONS.receivepayments,
+          },
+          {
+            title: t('Credit Note/Sale Return'),
+            path: paths.dashboard.creditnotesalereturn.list,
+            icon: ICONS.creditnotesalereturn,
+          },
+          {
+            title: t('Debit Note/Sale Return'),
+            path: paths.dashboard.debitnotesalereturn.list,
+            icon: ICONS.debitnotesalereturn,
+          },
+          {
+            title: t('Stock Transfer'),
+            path: paths.dashboard.stocktransfer.list,
+            icon: ICONS.stocktransfer,
+          },
+        ],
+      },
+      {
+        subheader: t('Reports'),
+        items: [
+          {
+            title: t('all Reports'),
+            path: paths.dashboard.allreports,
+            icon: ICONS.print,
+          },
+        ],
+      },
+      {
+        subheader: t('Settings'),
+        items: [
+          {
+            title: t('Vendor Tounche'),
+            path: paths.dashboard.vendortounche.list,
+            icon: ICONS.vendortounche,
+          },
+          {
+            title: t('Customer Tounche'),
+            path: paths.dashboard.customertounche.list,
+            icon: ICONS.customertounche,
+          },
+          {
+            title: t('Config'),
+            path: paths.dashboard.config,
+            icon: ICONS.config,
           },
         ],
       },
     ],
-    [t]
+    [t],
   );
 
   return data;

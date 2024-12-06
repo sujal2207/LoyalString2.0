@@ -1,111 +1,113 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
-
+import { useCallback } from 'react';
+import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
+import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
-
+import InputAdornment from '@mui/material/InputAdornment';
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
 export default function ProductTableToolbar({
-  filters,
-  onFilters,
-  //
-  stockOptions,
-  publishOptions,
-}) {
+                                              filters,
+                                              onFilters,
+                                              //
+                                              roleOptions,
+                                            }) {
   const popover = usePopover();
 
-  const [stock, setStock] = useState(filters.stock);
+  const handleFilterName = useCallback(
+    (event) => {
+      onFilters('name', event.target.value);
+    },
+    [onFilters],
+  );
 
-  const [publish, setPublish] = useState(filters.publish);
-
-  const handleChangeStock = useCallback((event) => {
-    const {
-      target: { value },
-    } = event;
-    setStock(typeof value === 'string' ? value.split(',') : value);
-  }, []);
-
-  const handleChangePublish = useCallback((event) => {
-    const {
-      target: { value },
-    } = event;
-    setPublish(typeof value === 'string' ? value.split(',') : value);
-  }, []);
-
-  const handleCloseStock = useCallback(() => {
-    onFilters('stock', stock);
-  }, [onFilters, stock]);
-
-  const handleClosePublish = useCallback(() => {
-    onFilters('publish', publish);
-  }, [onFilters, publish]);
+  const handleFilterRole = useCallback(
+    (event) => {
+      onFilters(
+        'role',
+        typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value,
+      );
+    },
+    [onFilters],
+  );
 
   return (
     <>
-      <FormControl
+      <Stack
+        spacing={2}
+        alignItems={{ xs: 'flex-end', md: 'center' }}
+        direction={{
+          xs: 'column',
+          md: 'row',
+        }}
         sx={{
-          flexShrink: 0,
-          width: { xs: 1, md: 200 },
+          p: 2.5,
+          pr: { xs: 2.5, md: 1 },
         }}
       >
-        <InputLabel>Stock</InputLabel>
-
-        <Select
-          multiple
-          value={stock}
-          onChange={handleChangeStock}
-          input={<OutlinedInput label="Stock" />}
-          renderValue={(selected) => selected.map((value) => value).join(', ')}
-          onClose={handleCloseStock}
-          sx={{ textTransform: 'capitalize' }}
+        <FormControl
+          sx={{
+            flexShrink: 0,
+            width: { xs: 1, md: 200 },
+          }}
         >
-          {stockOptions.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              <Checkbox disableRipple size="small" checked={stock.includes(option.value)} />
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <InputLabel>Role</InputLabel>
 
-      <FormControl
-        sx={{
-          flexShrink: 0,
-          width: { xs: 1, md: 200 },
-        }}
-      >
-        <InputLabel>Publish</InputLabel>
+          <Select
+            multiple
+            value={filters.role}
+            onChange={handleFilterRole}
+            input={<OutlinedInput label='Role' />}
+            renderValue={(selected) => selected.map((value) => value).join(', ')}
+            MenuProps={{
+              PaperProps: {
+                sx: { maxHeight: 240 },
+              },
+            }}
+          >
+            {roleOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                <Checkbox disableRipple size='small' checked={filters.role.includes(option)} />
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        <Select
-          multiple
-          value={publish}
-          onChange={handleChangePublish}
-          input={<OutlinedInput label="Publish" />}
-          renderValue={(selected) => selected.map((value) => value).join(', ')}
-          onClose={handleClosePublish}
-          sx={{ textTransform: 'capitalize' }}
-        >
-          {publishOptions.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              <Checkbox disableRipple size="small" checked={publish.includes(option.value)} />
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        <Stack direction='row' alignItems='center' spacing={2} flexGrow={1} sx={{ width: 1 }}>
+          <TextField
+            fullWidth
+            value={filters.name}
+            onChange={handleFilterName}
+            placeholder='Search...'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <Iconify icon='eva:search-fill' sx={{ color: 'text.disabled' }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <IconButton onClick={popover.onOpen}>
+            <Iconify icon='eva:more-vertical-fill' />
+          </IconButton>
+        </Stack>
+      </Stack>
 
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
-        arrow="right-top"
+        arrow='right-top'
         sx={{ width: 140 }}
       >
         <MenuItem
@@ -113,7 +115,7 @@ export default function ProductTableToolbar({
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:printer-minimalistic-bold" />
+          <Iconify icon='solar:printer-minimalistic-bold' />
           Print
         </MenuItem>
 
@@ -122,7 +124,7 @@ export default function ProductTableToolbar({
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:import-bold" />
+          <Iconify icon='solar:import-bold' />
           Import
         </MenuItem>
 
@@ -131,7 +133,7 @@ export default function ProductTableToolbar({
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:export-bold" />
+          <Iconify icon='solar:export-bold' />
           Export
         </MenuItem>
       </CustomPopover>
@@ -142,6 +144,5 @@ export default function ProductTableToolbar({
 ProductTableToolbar.propTypes = {
   filters: PropTypes.object,
   onFilters: PropTypes.func,
-  publishOptions: PropTypes.array,
-  stockOptions: PropTypes.array,
+  roleOptions: PropTypes.array,
 };
