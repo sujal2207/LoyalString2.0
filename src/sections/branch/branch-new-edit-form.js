@@ -99,33 +99,47 @@ export default function BranchNewEditForm({ currentCompany }) {
               display='grid'
               gridTemplateColumns={{
                 xs: 'repeat(1, 1fr)',
-                sm: 'repeat(3, 1fr)', // Three fields per row
+                sm: 'repeat(4, 1fr)',
               }}
             >
-              {/* Branch Details */}
               <RHFTextField name='branchCode' label='Branch Code' />
               <RHFAutocomplete
                 name='companyId'
                 label='Company ID'
                 placeholder='Choose a company'
-                options={['Company A', 'Company B']} // Example options
+                options={['Company A', 'Company B']}
               />
               <RHFTextField name='branchName' label='Branch Name' />
               <RHFAutocomplete
                 name='branchType'
                 label='Branch Type'
                 placeholder='Select branch type'
-                options={['Type A', 'Type B']} // Example options
+                options={['Type A', 'Type B']}
               />
               <RHFTextField name='branchHead' label='Branch Head' />
               <RHFTextField name='branchAddress' label='Branch Address' />
-              <RHFTextField name='mobileNumber' label='Mobile Number' />
-              <RHFTextField name='faxNumber' label='Fax Number' />
+              <RHFTextField name='mobileNumber' label='Mobile Number'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ maxLength: 10, pattern: '[0-9]*' }} />
+              <RHFTextField name='faxNumber' label='Fax Number'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ maxLength: 10, pattern: '[0-9]*' }} />
               <RHFTextField name='branchEmailId' label='Branch Email ID' />
-              <RHFTextField name='financialYear' label='Financial Year' />
-              <RHFTextField name='gstin' label='GSTIN' />
-
-              {/* Address Details */}
+              <RHFTextField name='financialYear' label='Financial Year'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ pattern: '[0-9]*' }} />
+              <RHFTextField name='gstin' label='GSTIN'
+                            inputProps={{ maxLength: 15 }}
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }}
+              />
               <RHFTextField name='websiteUrl' label='Website URL' />
               <RHFTextField name='street' label='Street' />
               <RHFAutocomplete
@@ -168,9 +182,13 @@ export default function BranchNewEditForm({ currentCompany }) {
                 defaultValue='Surat'
                 isOptionEqualToValue={(option, value) => option === value}
               />
-              <RHFTextField name='postalCode' label='Postal Code' />
+              <RHFTextField name='postalCode' label='Postal Code'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ maxLength: 6, pattern: '[0-9]*' }}
+              />
             </Box>
-
             <Stack alignItems='flex-end' sx={{ mt: 3 }}>
               <LoadingButton
                 type='submit'

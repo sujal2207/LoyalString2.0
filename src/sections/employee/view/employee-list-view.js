@@ -126,7 +126,7 @@ export default function EmployeeListView() {
 
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.branch.edit(id));
+      router.push(paths.dashboard.employee.edit(id));
     },
     [router],
   );

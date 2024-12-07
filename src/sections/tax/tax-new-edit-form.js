@@ -49,7 +49,7 @@ export default function TaxNewEditForm({ currentCompany }) {
       taxType: currentCompany?.taxType || '',
       financialYear: currentCompany?.financialYear || '',
     }),
-    [currentCompany]
+    [currentCompany],
   );
 
   const methods = useForm({
@@ -90,7 +90,7 @@ export default function TaxNewEditForm({ currentCompany }) {
         setValue('avatarUrl', newFile, { shouldValidate: true });
       }
     },
-    [setValue]
+    [setValue],
   );
 
   return (
@@ -144,7 +144,11 @@ export default function TaxNewEditForm({ currentCompany }) {
               />
 
               {/* Percentage */}
-              <RHFTextField name='percentage' label='Percentage%' type="number" />
+              <RHFTextField name='percentage' label='Percentage%' type='number'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ pattern: '[0-9]*' }} />
 
               {/* Financial Year */}
               <RHFAutocomplete

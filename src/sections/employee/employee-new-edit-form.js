@@ -118,7 +118,10 @@ export default function EmployeeNewEditForm({ currentCompany }) {
               <RHFTextField name='firstName' label='First Name' />
               <RHFTextField name='lastName' label='Last Name' />
               <RHFTextField name='empEmail' label='Employee Email' />
-              <RHFTextField name='mobileNumber' label='Mobile Number' />
+              <RHFTextField name='mobileNumber' label='Mobile Number' onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              }}
+                            inputProps={{ maxLength: 10, pattern: '[0-9]*' }} />
               <RHFTextField name='streetAddress' label='Street Address' />
               <RHFTextField name='town' label='Town' />
               <RHFAutocomplete
@@ -161,15 +164,22 @@ export default function EmployeeNewEditForm({ currentCompany }) {
                 defaultValue='Surat'
                 isOptionEqualToValue={(option, value) => option === value}
               />
-              <RHFTextField name='aadharNo' label='Aadhar No' />
-              <RHFTextField name='panNo' label='Pan No' />
+              <RHFTextField name='aadharNo' label='Aadhar No'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ maxLength: 12, pattern: '[0-9]*' }} />
+              <RHFTextField name='panNo' label='Pan No'
+                            inputProps={{ maxLength: 10 }}
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }} />
               <RHFDatePicker
                 name='dateOfBirth'
                 control={control}
                 label='Date of Birth'
               />
               <RHFTextField name='gender' label='Gender' />
-
               <RHFDatePicker
                 name='joiningDate'
                 control={control}
@@ -179,7 +189,6 @@ export default function EmployeeNewEditForm({ currentCompany }) {
             </Box>
           </Card>
         </Grid>
-        {/* System Details */}
         <Grid xs={12}>
           <Card sx={{ p: 3 }}>
             <Typography variant='h6' gutterBottom>
@@ -191,7 +200,7 @@ export default function EmployeeNewEditForm({ currentCompany }) {
               display='grid'
               gridTemplateColumns={{
                 xs: 'repeat(1, 1fr)',
-                sm: 'repeat(3, 1fr)', // Three fields per row
+                sm: 'repeat(3, 1fr)',
               }}
             >
               <RHFTextField name='company' label='Company' />
@@ -205,7 +214,6 @@ export default function EmployeeNewEditForm({ currentCompany }) {
             </Box>
           </Card>
         </Grid>
-        {/* Bank Details */}
         <Grid xs={12}>
           <Card sx={{ p: 3 }}>
             <Typography variant='h6' gutterBottom>
@@ -217,19 +225,29 @@ export default function EmployeeNewEditForm({ currentCompany }) {
               display='grid'
               gridTemplateColumns={{
                 xs: 'repeat(1, 1fr)',
-                sm: 'repeat(3, 1fr)', // Three fields per row
+                sm: 'repeat(3, 1fr)',
               }}
             >
               <RHFTextField name='bankName' label='Bank Name' />
               <RHFTextField name='accountName' label='Account Name' />
-              <RHFTextField name='bankAccountNo' label='Bank Account No' />
+              <RHFTextField name='bankAccountNo' label='Bank Account No'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }} />
               <RHFTextField name='branchName' label='Branch Name' />
-              <RHFTextField name='ifscCode' label='IFSC Code' />
-              <RHFTextField name='salary' label='Salary' />
+              <RHFTextField name='ifscCode' label='IFSC Code'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ pattern: '[0-9]*' }} />
+              <RHFTextField name='salary' label='Salary'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ pattern: '[0-9]*' }} />
             </Box>
           </Card>
         </Grid>
-        {/* Submit Button */}
         <Grid xs={12}>
           <Stack direction='row' justifyContent='flex-end' spacing={2}>
             <LoadingButton type='submit' variant='contained' loading={isSubmitting}>

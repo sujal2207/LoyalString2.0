@@ -52,7 +52,7 @@ export default function BankAccountNewEditForm({ currentCompany }) {
       branchAddress: currentCompany?.branchAddress || '',
       IFSC: currentCompany?.IFSC || '',
     }),
-    [currentCompany]
+    [currentCompany],
   );
 
   const methods = useForm({
@@ -82,7 +82,7 @@ export default function BankAccountNewEditForm({ currentCompany }) {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid md={4}>
-          <Typography variant="h6" sx={{ mb: 0.5 }}>
+          <Typography variant='h6' sx={{ mb: 0.5 }}>
             {currentCompany ? 'Edit Bank Account' : 'Add New Bank Account'}
           </Typography>
         </Grid>
@@ -92,21 +92,29 @@ export default function BankAccountNewEditForm({ currentCompany }) {
             <Box
               rowGap={3}
               columnGap={2}
-              display="grid"
+              display='grid'
               gridTemplateColumns={{
                 xs: 'repeat(1, 1fr)',
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="bankName" label="Bank Name" />
-              <RHFTextField name="accountName" label="Account Name" />
-              <RHFTextField name="bankAccountNo" label="Bank Account No" />
-              <RHFTextField name="branchName" label="Branch Name" />
-              <RHFTextField name="mobileNumber" label="Mobile Number" />
+              <RHFTextField name='bankName' label='Bank Name' />
+              <RHFTextField name='accountName' label='Account Name' />
+              <RHFTextField name='bankAccountNo' label='Bank Account No'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }}
+              />
+              <RHFTextField name='branchName' label='Branch Name' />
+              <RHFTextField name='mobileNumber' label='Mobile Number'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ maxLength: 10, pattern: '[0-9]*' }} />
               <RHFAutocomplete
-                name="accountType"
-                label="Account Type"
-                placeholder="Select Account Type"
+                name='accountType'
+                label='Account Type'
+                placeholder='Select Account Type'
                 options={[
                   { label: 'Savings', value: 'savings' },
                   { label: 'Current', value: 'current' },
@@ -114,15 +122,19 @@ export default function BankAccountNewEditForm({ currentCompany }) {
                 ]}
                 getOptionLabel={(option) => option.label}
               />
-              <RHFTextField name="branchAddress" label="Branch Address" />
-              <RHFTextField name="IFSC" label="IFSC Code" />
+              <RHFTextField name='branchAddress' label='Branch Address' />
+              <RHFTextField name='IFSC' label='IFSC Code'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ pattern: '[0-9]*' }} />
             </Box>
 
-            <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 3 }}>
-              <Button variant="outlined" onClick={() => reset()}>
+            <Stack direction='row' spacing={2} justifyContent='flex-end' sx={{ mt: 3 }}>
+              <Button variant='outlined' onClick={() => reset()}>
                 Reset
               </Button>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              <LoadingButton type='submit' variant='contained' loading={isSubmitting}>
                 Submit
               </LoadingButton>
             </Stack>

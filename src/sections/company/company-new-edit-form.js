@@ -158,7 +158,6 @@ export default function CompanyNewEditForm({ currentCompany }) {
             </Box>
           </Card>
         </Grid>
-
         <Grid xs={12}>
           <Card sx={{ p: 3 }}>
             <Box
@@ -171,15 +170,34 @@ export default function CompanyNewEditForm({ currentCompany }) {
               }}
             >
               <RHFTextField name='registrationNo' label='Registration No' />
-              <RHFTextField name='gstinNo' label='GSTIN No' />
-              <RHFTextField name='panNo' label='PAN No' />
-              <RHFTextField name='aadharNo' label='Aadhar No' />
-              <RHFTextField name='vatNo' label='VAT No' />
-              <RHFTextField name='cgstNo' label='CGST No' />
+              <RHFTextField name='gstinNo' label='GSTIN No'
+                            inputProps={{ maxLength: 15 }}
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }} />
+              <RHFTextField name='panNo' label='PAN No'
+                            inputProps={{ maxLength: 10 }}
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }} />
+              <RHFTextField name='aadharNo' label='Aadhar No'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ maxLength: 12, pattern: '[0-9]*' }} />
+              <RHFTextField name='vatNo' label='VAT No'
+                            inputProps={{ maxLength: 11 }}
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }} />
+              <RHFTextField name='cgstNo' label='CGST No'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }}
+                            inputProps={{ maxLength: 15 }} />
             </Box>
           </Card>
         </Grid>
-
         <Grid xs={12}>
           <Card sx={{ p: 3 }}>
             <Box
@@ -232,12 +250,15 @@ export default function CompanyNewEditForm({ currentCompany }) {
                 defaultValue='Surat'
                 isOptionEqualToValue={(option, value) => option === value}
               />
-              <RHFTextField name='postalCode' label='Postal Code' />
+              <RHFTextField name='postalCode' label='Postal Code'
+                            inputProps={{ maxLength: 6, pattern: '[0-9]*' }}
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }} />
               <RHFTextField name='websiteurl' label='Website URL' />
             </Box>
           </Card>
         </Grid>
-
         <Stack direction='row' justifyContent='flex-end' sx={{ mt: 3 }}>
           <LoadingButton type='submit' variant='contained' loading={isSubmitting}>
             Submit

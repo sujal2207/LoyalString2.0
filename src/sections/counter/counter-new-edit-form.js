@@ -105,7 +105,11 @@ export default function CounterNewEditForm() {
               <RHFTextField name='counterName' label='Counter Name' />
 
               {/* Counter Number */}
-              <RHFTextField name='counterNumber' label='Counter Number' />
+              <RHFTextField name='counterNumber' label='Counter Number'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ pattern: '[0-9]*' }} />
 
               {/* Counter Description */}
               <RHFTextField
@@ -116,7 +120,11 @@ export default function CounterNewEditForm() {
               />
 
               {/* Financial Year */}
-              <RHFTextField name='financialYear' label='Financial Year' />
+              <RHFTextField name='financialYear' label='Financial Year'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
+                            inputProps={{ pattern: '[0-9]*' }} />
             </Box>
 
             <Stack direction='row' spacing={2} justifyContent='flex-end' sx={{ mt: 3 }}>
