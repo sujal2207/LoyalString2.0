@@ -18,3 +18,8 @@
 @import 'yet-another-react-lightbox/styles.css';
 @import 'yet-another-react-lightbox/plugins/captions.css';
 @import 'yet-another-react-lightbox/plugins/thumbnails.css';
+
+.css-1nga4sa-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root ,.css-lj3qqe-MuiButtonBase-root-MuiButton-root,.css-1uagidw-MuiButtonBase-root-MuiButton-root{
+border-radius: 0 !important;
+
+}
