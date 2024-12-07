@@ -1,4 +1,4 @@
-import ConfigAccountView from '../../../sections/config/view/config-account-view';
+import ConfigView from '../../../sections/config/view/config-view';
 
 // ----------------------------------------------------------------------
 
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function ConfigPage() {
-  return <ConfigAccountView />;
+  return <ConfigView />;
 }

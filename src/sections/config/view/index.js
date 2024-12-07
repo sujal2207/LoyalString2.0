@@ -1,1 +1,1 @@
-export { default as ConfigView } from './config-account-view';
+export { default as ConfigAccountView } from './config-view';

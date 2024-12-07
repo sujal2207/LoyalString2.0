@@ -100,41 +100,6 @@ export default function AllReportsGeneral() {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid container spacing={3}>
-        <Grid xs={12} md={4}>
-          <Card sx={{ pt: 10, pb: 5, px: 3, textAlign: 'center' }}>
-            <RHFUploadAvatar
-              name="photoURL"
-              maxSize={3145728}
-              onDrop={handleDrop}
-              helperText={
-                <Typography
-                  variant="caption"
-                  sx={{
-                    mt: 3,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.disabled',
-                  }}
-                >
-                  Allowed *.jpeg, *.jpg, *.png, *.gif
-                  <br /> max size of {fData(3145728)}
-                </Typography>
-              }
-            />
-
-            <RHFSwitch
-              name="isPublic"
-              labelPlacement="start"
-              label="Public Profile"
-              sx={{ mt: 5 }}
-            />
-
-            <Button variant="soft" color="error" sx={{ mt: 3 }}>
-              Delete User
-            </Button>
-          </Card>
-        </Grid>
 
         <Grid xs={12} md={8}>
           <Card sx={{ p: 3 }}>
@@ -151,15 +116,6 @@ export default function AllReportsGeneral() {
               <RHFTextField name="email" label="Email Address" />
               <RHFTextField name="phoneNumber" label="Phone Number" />
               <RHFTextField name="address" label="Address" />
-
-              <RHFAutocomplete
-                name="country"
-                type="country"
-                label="Country"
-                placeholder="Choose a country"
-                options={countries.map((option) => option.label)}
-                getOptionLabel={(option) => option}
-              />
 
               <RHFTextField name="state" label="State/Region" />
               <RHFTextField name="city" label="City" />

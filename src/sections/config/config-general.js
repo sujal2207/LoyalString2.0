@@ -15,14 +15,12 @@ import { useMockedUser } from 'src/hooks/use-mocked-user';
 
 import { fData } from 'src/utils/format-number';
 
-import { countries } from 'src/assets/data';
 
 import { useSnackbar } from 'src/components/snackbar';
 import FormProvider, {
   RHFSwitch,
   RHFTextField,
   RHFUploadAvatar,
-  RHFAutocomplete,
 } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
@@ -151,16 +149,6 @@ export default function ConfigGeneral() {
               <RHFTextField name="email" label="Email Address" />
               <RHFTextField name="phoneNumber" label="Phone Number" />
               <RHFTextField name="address" label="Address" />
-
-              <RHFAutocomplete
-                name="country"
-                type="country"
-                label="Country"
-                placeholder="Choose a country"
-                options={countries.map((option) => option.label)}
-                getOptionLabel={(option) => option}
-              />
-
               <RHFTextField name="state" label="State/Region" />
               <RHFTextField name="city" label="City" />
               <RHFTextField name="zipCode" label="Zip/Code" />

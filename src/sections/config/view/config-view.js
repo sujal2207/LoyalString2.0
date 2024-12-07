@@ -52,7 +52,7 @@ const TABS = [
 
 // ----------------------------------------------------------------------
 
-export default function ConfigAccountView() {
+export default function ConfigView() {
   const settings = useSettingsContext();
 
   const [currentTab, setCurrentTab] = useState('general');
