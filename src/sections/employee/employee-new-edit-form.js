@@ -180,7 +180,6 @@ export default function EmployeeNewEditForm({ currentCompany }) {
                 label='Date of Birth'
               />
               <RHFTextField name='gender' label='Gender' />
-
               <RHFDatePicker
                 name='joiningDate'
                 control={control}
@@ -190,7 +189,6 @@ export default function EmployeeNewEditForm({ currentCompany }) {
             </Box>
           </Card>
         </Grid>
-        {/* System Details */}
         <Grid xs={12}>
           <Card sx={{ p: 3 }}>
             <Typography variant='h6' gutterBottom>
@@ -202,7 +200,7 @@ export default function EmployeeNewEditForm({ currentCompany }) {
               display='grid'
               gridTemplateColumns={{
                 xs: 'repeat(1, 1fr)',
-                sm: 'repeat(3, 1fr)', // Three fields per row
+                sm: 'repeat(3, 1fr)',
               }}
             >
               <RHFTextField name='company' label='Company' />
@@ -216,7 +214,6 @@ export default function EmployeeNewEditForm({ currentCompany }) {
             </Box>
           </Card>
         </Grid>
-        {/* Bank Details */}
         <Grid xs={12}>
           <Card sx={{ p: 3 }}>
             <Typography variant='h6' gutterBottom>
@@ -228,7 +225,7 @@ export default function EmployeeNewEditForm({ currentCompany }) {
               display='grid'
               gridTemplateColumns={{
                 xs: 'repeat(1, 1fr)',
-                sm: 'repeat(3, 1fr)', // Three fields per row
+                sm: 'repeat(3, 1fr)',
               }}
             >
               <RHFTextField name='bankName' label='Bank Name' />
@@ -251,7 +248,6 @@ export default function EmployeeNewEditForm({ currentCompany }) {
             </Box>
           </Card>
         </Grid>
-        {/* Submit Button */}
         <Grid xs={12}>
           <Stack direction='row' justifyContent='flex-end' spacing={2}>
             <LoadingButton type='submit' variant='contained' loading={isSubmitting}>
