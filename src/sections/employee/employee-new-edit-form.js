@@ -18,6 +18,7 @@ import FormProvider, {
   RHFAutocomplete,
 } from 'src/components/hook-form';
 import countrystatecity from '../../_mock/map/csc.json';
+import RHFDatePicker from '../../components/hook-form/rhf-.date-picker';
 
 export default function EmployeeNewEditForm({ currentCompany }) {
   const NewUserSchema = Yup.object().shape({
@@ -162,28 +163,17 @@ export default function EmployeeNewEditForm({ currentCompany }) {
               />
               <RHFTextField name='aadharNo' label='Aadhar No' />
               <RHFTextField name='panNo' label='Pan No' />
-              <Controller
+              <RHFDatePicker
                 name='dateOfBirth'
                 control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    {...field}
-                    label='Date of Birth'
-                    renderInput={(params) => <RHFTextField {...params} fullWidth />}
-                  />
-                )}
+                label='Date of Birth'
               />
               <RHFTextField name='gender' label='Gender' />
-              <Controller
+
+              <RHFDatePicker
                 name='joiningDate'
                 control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    {...field}
-                    label='Joining Date'
-                    renderInput={(params) => <RHFTextField {...params} fullWidth />}
-                  />
-                )}
+                label='Joining Date'
               />
               <RHFTextField name='workLocation' label='Work Location' />
             </Box>

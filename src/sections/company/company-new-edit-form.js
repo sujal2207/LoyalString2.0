@@ -191,7 +191,7 @@ export default function CompanyNewEditForm({ currentCompany }) {
                 sm: 'repeat(4, 1fr)',
               }}
             >
-              <RHFTextField name='street' label='Street' />
+              <RHFTextField name='street' label='Street' req={'red'}/>
               <RHFAutocomplete
                 name='country'
                 req={'red'}
