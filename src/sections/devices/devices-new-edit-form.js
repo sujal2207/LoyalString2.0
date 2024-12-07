@@ -65,28 +65,28 @@ export default function DevicesNewEditForm({ currentCompany }) {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h6" sx={{ mb: 2 }}>
+      <Typography variant='h6' sx={{ mb: 2 }}>
         Add New Devices
       </Typography>
 
       <Card sx={{ p: 3 }}>
         <Grid container spacing={3}>
           <Grid xs={12} sm={6} md={4}>
-            <RHFTextField name="deviceCode" label="Device Code" />
+            <RHFTextField name='deviceCode' label='Device Code' />
           </Grid>
 
           <Grid xs={12} sm={6} md={4}>
-            <RHFTextField name="deviceType" label="Device Type" />
+            <RHFTextField name='deviceType' label='Device Type' />
           </Grid>
 
           <Grid xs={12} sm={6} md={4}>
             <Controller
-              name="activationDate"
+              name='activationDate'
               control={control}
               render={({ field }) => (
                 <DatePicker
                   {...field}
-                  label="Device Activation Date"
+                  label='Device Activation Date'
                   onChange={(date) => setValue('activationDate', date)}
                   renderInput={(params) => <RHFTextField {...params} />}
                 />
@@ -96,12 +96,12 @@ export default function DevicesNewEditForm({ currentCompany }) {
 
           <Grid xs={12} sm={6} md={4}>
             <Controller
-              name="deactivationDate"
+              name='deactivationDate'
               control={control}
               render={({ field }) => (
                 <DatePicker
                   {...field}
-                  label="Device Deactivation Date"
+                  label='Device Deactivation Date'
                   onChange={(date) => setValue('deactivationDate', date)}
                   renderInput={(params) => <RHFTextField {...params} />}
                 />
@@ -110,31 +110,46 @@ export default function DevicesNewEditForm({ currentCompany }) {
           </Grid>
 
           <Grid xs={12} sm={6} md={4}>
-            <RHFTextField name="deviceSerialNumber" label="Device Serial No." />
+            <RHFTextField name='deviceSerialNumber' label='Device Serial No.'
+                          onInput={(e) => {
+                            e.target.value = e.target.value.toUpperCase();
+                          }}
+            />
           </Grid>
 
           <Grid xs={12} sm={6} md={4}>
-            <RHFTextField name="deviceBuildNumber" label="Device Build No." />
+            <RHFTextField name='deviceBuildNumber' label='Device Build No.'
+                          onInput={(e) => {
+                            e.target.value = e.target.value.toUpperCase();
+                          }}
+            />
           </Grid>
 
           <Grid xs={12} sm={6} md={4}>
-            <RHFTextField name="deviceModel" label="Device Model" />
+            <RHFTextField name='deviceModel' label='Device Model'
+                          onInput={(e) => {
+                            e.target.value = e.target.value.toUpperCase();
+                          }} />
           </Grid>
 
           <Grid xs={12} sm={6} md={4}>
-            <RHFTextField name="mobileNumber" label="Mobile No." />
+            <RHFTextField name='mobileNumber' label='Mobile No.'
+                          onInput={(e) => {
+                            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                          }}
+                          inputProps={{ maxLength: 10, pattern: '[0-9]*' }} />
           </Grid>
 
           <Grid xs={12} sm={6} md={4}>
-            <RHFTextField name="deviceStatus" label="Device Status" />
+            <RHFTextField name='deviceStatus' label='Device Status' />
           </Grid>
         </Grid>
 
-        <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 3 }}>
-          <Button variant="outlined" onClick={() => reset()}>
+        <Stack direction='row' spacing={2} justifyContent='flex-end' sx={{ mt: 3 }}>
+          <Button variant='outlined' onClick={() => reset()}>
             Reset
           </Button>
-          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+          <LoadingButton type='submit' variant='contained' loading={isSubmitting}>
             Submit
           </LoadingButton>
         </Stack>

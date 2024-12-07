@@ -66,7 +66,7 @@ export default function DepartmentNewEditForm({ currentCompany }) {
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid container spacing={3}>
         <Grid xs={12} md={4}>
-          <Typography variant="h6" sx={{ mb: 0.5 }}>
+          <Typography variant='h6' sx={{ mb: 0.5 }}>
             Add New Department
           </Typography>
         </Grid>
@@ -74,7 +74,7 @@ export default function DepartmentNewEditForm({ currentCompany }) {
         <Grid xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box
-              display="grid"
+              display='grid'
               rowGap={3}
               columnGap={2}
               gridTemplateColumns={{
@@ -82,22 +82,25 @@ export default function DepartmentNewEditForm({ currentCompany }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="departmentName" label="Department Name" />
-              <RHFTextField name="departmentCode" label="Department Code" />
+              <RHFTextField name='departmentName' label='Department Name' />
+              <RHFTextField name='departmentCode' label='Department Code'
+                            onInput={(e) => {
+                              e.target.value = e.target.value.toUpperCase();
+                            }} />
               <RHFAutocomplete
-                name="departmentHead"
-                label="Department Head"
-                placeholder="Select Department Head"
+                name='departmentHead'
+                label='Department Head'
+                placeholder='Select Department Head'
                 options={[]} // Replace with dynamic options: [{ label: 'John Doe', value: '1' }]
                 fullWidth
               />
-              <RHFTextField name="departmentDescription" label="Department Description" />
+              <RHFTextField name='departmentDescription' label='Department Description' />
             </Box>
-            <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 3 }}>
-              <Button variant="outlined" onClick={() => reset()}>
+            <Stack direction='row' spacing={2} justifyContent='flex-end' sx={{ mt: 3 }}>
+              <Button variant='outlined' onClick={() => reset()}>
                 Reset
               </Button>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              <LoadingButton type='submit' variant='contained' loading={isSubmitting}>
                 Submit
               </LoadingButton>
             </Stack>
