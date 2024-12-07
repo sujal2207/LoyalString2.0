@@ -9,11 +9,13 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { countries } from 'src/assets/data';
 
 import Iconify from 'src/components/iconify';
+import { Paper } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-export default function RHFAutocomplete({ name, label, type, helperText, placeholder, ...other }) {
+export default function RHFAutocomplete({ name, label, type, helperText, placeholder,options,req, ...other }) {
   const { control, setValue } = useFormContext();
+  const customStyle = req  ? { borderLeft: `2px solid ${req}`} : {};
 
   const { multiple } = other;
 
@@ -117,10 +119,54 @@ export default function RHFAutocomplete({ name, label, type, helperText, placeho
             {...field}
             id={`autocomplete-${name}`}
             onChange={(event, newValue) => setValue(name, newValue, { shouldValidate: true })}
+            options={options}
+            PaperComponent={(props) => (
+              <Paper
+                {...props}
+                sx={{
+                  '& .MuiAutocomplete-listbox': {
+                    maxHeight: 200, // adjust max height for scrolling
+                    overflow: 'auto',
+                    '::-webkit-scrollbar': {
+                      width: '5px',
+                    },
+                    '::-webkit-scrollbar-thumb': {
+                      backgroundColor: '#888',
+                      opacity:0.1,
+                      borderRadius: '4px',
+                    },
+                    '::-webkit-scrollbar-thumb:hover': {
+                      backgroundColor: '#555',
+                    },
+                  },
+                }}
+              />
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label={label}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&:focus-within': {
+                      borderRadius: 0,
+                    },
+                  },
+                  '&:not(:focus-within) label ~ .MuiOutlinedInput-root': {
+                    borderRadius: 0,
+                    ...customStyle,
+                  },
+                  '& label': {
+                    marginTop: -0.8,
+                    fontSize: '14px',
+                  },
+                  '& .MuiInputLabel-shrink': {
+                    marginTop: 0,
+                  },
+                  '& input': {
+                    height: '7px',
+                  },
+                }}
                 placeholder={placeholder}
                 error={!!error}
                 helperText={error ? error?.message : helperText}
