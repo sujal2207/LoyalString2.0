@@ -11,6 +11,7 @@ import CompanyConfig from '../company-config';
 import { useAuthContext } from '../../../auth/hooks';
 import axios from 'axios';
 import { ASSETS_API } from '../../../config-global';
+import AddDiamondAttributes from '../add-diamond-attributes';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +20,11 @@ const TABS = [
     value: 'company',
     label: 'Company',
     icon: <Iconify icon='mdi:company' width={24} />,
+  },
+  {
+    value: 'diamondattributes',
+    label: 'Diamond Attributes',
+    icon: <Iconify icon='material-symbols:user-attributes-outline-rounded' width={24} />,
   },
 ];
 
@@ -59,7 +65,6 @@ export default function ConfigView() {
           mb: { xs: 3, md: 5 },
         }}
       />
-
       <Tabs
         value={currentTab}
         onChange={handleChangeTab}
@@ -71,9 +76,11 @@ export default function ConfigView() {
           <Tab key={tab.value} label={tab.label} icon={tab.icon} value={tab.value} />
         ))}
       </Tabs>
-
       {(currentTab === 'company' && company && user) && (
         <CompanyConfig company={company} setCompany={setCompany} user={user} />
+      )}
+      {currentTab === 'diamondattributes' && (
+        <AddDiamondAttributes />
       )}
     </Container>
   );
