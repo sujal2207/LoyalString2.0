@@ -68,11 +68,11 @@ export function useNavData() {
       {
         subheader: t('user master'),
         items: [
-          {
-            title: t('Company'),
-            path: paths.dashboard.company.list,
-            icon: ICONS.company,
-          },
+          // {
+          //   title: t('Company'),
+          //   path: paths.dashboard.company.list,
+          //   icon: ICONS.company,
+          // },
           {
             title: t('Branch'),
             path: paths.dashboard.branch.list,
@@ -113,11 +113,11 @@ export function useNavData() {
             path: paths.dashboard.tax.list,
             icon: ICONS.tax,
           },
-          {
-            title: t('Rate Conversion'),
-            path: paths.dashboard.rateconversion.list,
-            icon: ICONS.rateConversion,
-          },
+          // {
+          //   title: t('Rate Conversion'),
+          //   path: paths.dashboard.rateconversion.list,
+          //   icon: ICONS.rateConversion,
+          // },
         ],
       },
       {

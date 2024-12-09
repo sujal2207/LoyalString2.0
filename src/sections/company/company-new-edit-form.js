@@ -15,36 +15,23 @@ import FormProvider, {
   RHFAutocomplete,
 } from 'src/components/hook-form';
 import countrystatecity from '../../_mock/map/csc.json';
+import axios from 'axios';
+import { ASSETS_API } from '../../config-global';
+import { paths } from '../../routes/paths';
+import { useRouter } from '../../routes/hooks';
 
 export default function CompanyNewEditForm({ currentCompany }) {
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const schema = Yup.object().shape({
     companyName: Yup.string().required('Company Name is required'),
     companyShortName: Yup.string().required('Company Short Name is required'),
     ownerName: Yup.string().required('Owner Name is required'),
-    registeredAddress: Yup.string().required('Registered Address is required'),
-    factoryAddress: Yup.string(),
     mobileNo: Yup.string().required('Mobile No is required'),
     email: Yup.string()
       .email('Must be a valid email')
       .required('Email is required'),
-    registrationNo: Yup.string(),
-    yearOfEstablishment: Yup.string(),
-    gstinNo: Yup.string(),
-    panNo: Yup.string(),
-    aadharNo: Yup.string(),
-    vatNo: Yup.string(),
-    cgstNo: Yup.string(),
-    financialYear: Yup.string().required('Financial Year is required'),
-    website: Yup.string().url('Must be a valid URL'),
-    websiteURL: Yup.string().url('Must be a valid URL'),
-    street: Yup.string(),
-    city: Yup.string().required('City is required'),
-    postalCode: Yup.string(),
-    state: Yup.string().required('State is required'),
-    country: Yup.string().required('Country is required'),
-    avatarUrl: Yup.mixed().nullable().required('Company Logo is required'),
   });
 
   const defaultValues = useMemo(
@@ -71,7 +58,7 @@ export default function CompanyNewEditForm({ currentCompany }) {
       postalCode: currentCompany?.postalCode || '',
       state: currentCompany?.state || '',
       country: currentCompany?.country || '',
-      avatarUrl: currentCompany?.avatarUrl || null,
+      logo_url: currentCompany?.logo_url || null,
     }),
     [currentCompany],
   );
@@ -91,11 +78,55 @@ export default function CompanyNewEditForm({ currentCompany }) {
 
   const onSubmit = async (data) => {
     try {
-      console.log('Payload:', data);
-      enqueueSnackbar('Form submitted successfully!');
+      const payload = {
+        name: data.companyName,
+        short_name: data.companyShortName,
+        owner_name: data.ownerName,
+        registered_address: data.registeredAddress,
+        factory_address: data.factoryAddress,
+        email: data.email || null,
+        contact: data.mobileNo || null,
+        year_of_establishment: data.yearOfEstablishment,
+        website: data.website,
+        GST: data.gstinNo,
+        PAN: data.panNo,
+        AADHAR: data.aadharNo,
+        VAT: data.vatNo,
+        CGST: data.cgstNo,
+        logo_url: data.logo_url?.preview || null,
+        address: {
+          street: data.street,
+          city: data.city,
+          state: data.state,
+          country: data.country,
+          postal_code: data.postalCode,
+        },
+        financial_year: data.financialYear,
+      };
+
+      const formData = new FormData();
+      Object.keys(payload).forEach((key) => {
+        if (key === 'logo_url' && data.logo_url) {
+          formData.append(key, data.logo_url);
+        } else if (typeof payload[key] === 'object' && key === 'address') {
+          formData.append(key, JSON.stringify(payload[key]));
+        } else {
+          formData.append(key, payload[key]);
+        }
+      });
+
+      const response = await axios.post(`${ASSETS_API}/api/company`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      enqueueSnackbar('Form submitted successfully!', { variant: 'success' });
+      router.push(paths.dashboard.company.list);
       reset();
     } catch (error) {
       console.error('Submission error:', error);
+      enqueueSnackbar('Failed to submit the form. Please try again.', { variant: 'error' });
     }
   };
 
@@ -104,7 +135,7 @@ export default function CompanyNewEditForm({ currentCompany }) {
       const file = acceptedFiles[0];
       if (file) {
         setValue(
-          'avatarUrl',
+          'logo_url',
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           }),
@@ -121,7 +152,7 @@ export default function CompanyNewEditForm({ currentCompany }) {
         <Grid xs={12} md={4}>
           <Card sx={{ p: 3 }}>
             <RHFUploadAvatar
-              name='avatarUrl'
+              name='logo_url'
               onDrop={handleDrop}
             />
           </Card>
@@ -138,9 +169,13 @@ export default function CompanyNewEditForm({ currentCompany }) {
                 sm: 'repeat(3, 1fr)',
               }}
             >
-              <RHFTextField name='companyName' label='Company Name' />
-              <RHFTextField name='companyShortName' label='Company Short Name' />
-              <RHFTextField name='ownerName' label='Owner Name' />
+              <RHFTextField name='companyName' label='Company Name' req={'red'} />
+              <RHFTextField name='companyShortName' label='Company Short Name' req={'red'} onInput={(e) => {
+                e.target.value = e.target.value.toUpperCase();
+              }} />
+              <RHFTextField name='ownerName' label='Owner Name' req={'red'} onInput={(e) => {
+                e.target.value = e.target.value.toUpperCase();
+              }} />
               <RHFTextField name='registeredAddress' label='Registered Address' />
               <RHFTextField name='factoryAddress' label='Factory Address' />
               <RHFTextField
@@ -149,11 +184,12 @@ export default function CompanyNewEditForm({ currentCompany }) {
                 inputProps={{
                   maxLength: 10,
                 }}
+                req={'red'}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 }}
               />
-              <RHFTextField name='email' label='Email' />
+              <RHFTextField name='email' label='Email' req={'red'} />
               <RHFTextField name='website' label='Website' />
             </Box>
           </Card>
@@ -209,19 +245,16 @@ export default function CompanyNewEditForm({ currentCompany }) {
                 sm: 'repeat(4, 1fr)',
               }}
             >
-              <RHFTextField name='street' label='Street' req={'red'}/>
+              <RHFTextField name='street' label='Street' />
               <RHFAutocomplete
                 name='country'
-                req={'red'}
                 label='Country'
                 placeholder='Choose a country'
                 options={countrystatecity.map((country) => country.name)}
                 isOptionEqualToValue={(option, value) => option === value}
-                defaultValue='India'
               />
               <RHFAutocomplete
                 name='state'
-                req={'red'}
                 label='State'
                 placeholder='Choose a State'
                 options={
@@ -231,13 +264,11 @@ export default function CompanyNewEditForm({ currentCompany }) {
                     ?.states.map((state) => state.name) || []
                     : []
                 }
-                defaultValue='Gujarat'
                 isOptionEqualToValue={(option, value) => option === value}
               />
               <RHFAutocomplete
                 name='city'
                 label='City'
-                req={'red'}
                 placeholder='Choose a City'
                 options={
                   watch('state')
@@ -247,7 +278,6 @@ export default function CompanyNewEditForm({ currentCompany }) {
                     ?.cities.map((city) => city.name) || []
                     : []
                 }
-                defaultValue='Surat'
                 isOptionEqualToValue={(option, value) => option === value}
               />
               <RHFTextField name='postalCode' label='Postal Code'
@@ -255,15 +285,24 @@ export default function CompanyNewEditForm({ currentCompany }) {
                             onInput={(e) => {
                               e.target.value = e.target.value.replace(/[^0-9]/g, '');
                             }} />
-              <RHFTextField name='websiteurl' label='Website URL' />
+              <RHFTextField name='websiteURL' label='Website URL' />
             </Box>
           </Card>
         </Grid>
-        <Stack direction='row' justifyContent='flex-end' sx={{ mt: 3 }}>
-          <LoadingButton type='submit' variant='contained' loading={isSubmitting}>
-            Submit
-          </LoadingButton>
-        </Stack>
+        <Grid xs={12}>
+          <Stack
+            direction='row'
+            spacing={2}
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <LoadingButton type='submit' variant='contained' loading={isSubmitting}>
+              Submit
+            </LoadingButton>
+          </Stack>
+        </Grid>
       </Grid>
     </FormProvider>
   );

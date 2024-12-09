@@ -1,52 +1,24 @@
 'use client';
-
-import { useState, useCallback } from 'react';
-
+import { useState, useEffect, useCallback } from 'react';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Container from '@mui/material/Container';
-
 import { paths } from 'src/routes/paths';
-
-import { _userAbout, _userPlans, _userPayment, _userInvoices, _userAddressBook } from 'src/_mock';
-
 import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-
-import ConfigGeneral from '../config-general';
-import ConfigBilling from '../config-billing';
-import ConfigSocialLinks from '../config-social-links';
-import ConfigNotifications from '../config-notifications';
-import ConfigChangePassword from '../config-change-password';
+import CompanyConfig from '../company-config';
+import { useAuthContext } from '../../../auth/hooks';
+import axios from 'axios';
+import { ASSETS_API } from '../../../config-global';
 
 // ----------------------------------------------------------------------
 
 const TABS = [
   {
-    value: 'general',
-    label: 'General',
-    icon: <Iconify icon="solar:user-id-bold" width={24} />,
-  },
-  {
-    value: 'billing',
-    label: 'Billing',
-    icon: <Iconify icon="solar:bill-list-bold" width={24} />,
-  },
-  {
-    value: 'notifications',
-    label: 'Notifications',
-    icon: <Iconify icon="solar:bell-bing-bold" width={24} />,
-  },
-  {
-    value: 'social',
-    label: 'Social links',
-    icon: <Iconify icon="solar:share-bold" width={24} />,
-  },
-  {
-    value: 'security',
-    label: 'Security',
-    icon: <Iconify icon="ic:round-vpn-key" width={24} />,
+    value: 'company',
+    label: 'Company',
+    icon: <Iconify icon='mdi:company' width={24} />,
   },
 ];
 
@@ -54,8 +26,22 @@ const TABS = [
 
 export default function ConfigView() {
   const settings = useSettingsContext();
+  const [currentTab, setCurrentTab] = useState('company');
+  const { user } = useAuthContext();
+  const [company, setCompany] = useState(null);
 
-  const [currentTab, setCurrentTab] = useState('general');
+  useEffect(() => {
+    if (user?.company && user?._id) {
+      axios
+        .get(`${ASSETS_API}/api/company/${user?.company}/user/${user?._id}`)
+        .then((response) => {
+          setCompany(response?.data?.data?.company);
+        })
+        .catch((error) => {
+          console.error('Error fetching company details:', error);
+        });
+    }
+  }, [user]);
 
   const handleChangeTab = useCallback((event, newValue) => {
     setCurrentTab(newValue);
@@ -64,11 +50,10 @@ export default function ConfigView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Account"
+        heading='Account'
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'User', href: paths.dashboard.user.root },
-          { name: 'Account' },
+          { name: 'Config' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
@@ -87,22 +72,9 @@ export default function ConfigView() {
         ))}
       </Tabs>
 
-      {currentTab === 'general' && <ConfigGeneral />}
-
-      {currentTab === 'billing' && (
-        <ConfigBilling
-          plans={_userPlans}
-          cards={_userPayment}
-          invoices={_userInvoices}
-          addressBook={_userAddressBook}
-        />
+      {(currentTab === 'company' && company && user) && (
+        <CompanyConfig company={company} setCompany={setCompany} user={user} />
       )}
-
-      {currentTab === 'notifications' && <ConfigNotifications />}
-
-      {currentTab === 'social' && <ConfigSocialLinks socialLinks={_userAbout.socialLinks} />}
-
-      {currentTab === 'security' && <ConfigChangePassword />}
     </Container>
   );
 }

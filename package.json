@@ -5,8 +5,8 @@
   "description": "Next & JavaScript",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4040",
-    "start": "next start -p 4040",
+    "dev": "next dev -p 5050",
+    "start": "next start -p 5050",
     "build": "next build",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",

@@ -1,10 +1,10 @@
 'use client';
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, useReducer, useCallback } from 'react';
-import axios  from 'src/utils/axios';
+import axios from 'src/utils/axios';
 import { setSession } from './utils';
 import { AuthContext } from './auth-context';
-import {  HOST_API } from '../../../config-global';
+import { HOST_API } from '../../../config-global';
 import { enqueueSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
@@ -64,7 +64,7 @@ export function AuthProvider({ children }) {
         setSession(jwt, jwtRefresh);
         const url = `${HOST_API}/api/auth/me`;
         const response = await axios.get(url);
-        const user = response?.data;
+        const user = response?.data?.data;
         dispatch({
           type: 'INITIAL',
           payload: {

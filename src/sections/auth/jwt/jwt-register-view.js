@@ -26,7 +26,6 @@ export default function JwtRegisterView() {
   const { register } = useAuthContext();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const searchParams = useSearchParams();
   const password = useBoolean();
 
   const RegisterSchema = Yup.object().shape({
@@ -140,8 +139,8 @@ export default function JwtRegisterView() {
                       md: 'repeat(4, 1fr)',
                     }}
                   >
-                    <RHFTextField name='firstName' label='First Name' />
-                    <RHFTextField name='lastName' label='Last Name' />
+                    <RHFTextField name='firstName' label='First Name' req={'red'} />
+                    <RHFTextField name='lastName' label='Last Name' req={'red'} />
                     <RHFTextField
                       name='contact'
                       label='Contact'
@@ -151,11 +150,13 @@ export default function JwtRegisterView() {
                           e.target.value = e.target.value.slice(0, 10);
                         }
                       }}
+                      req={'red'}
                     />
-                    <RHFTextField name='email' label='Email' />
-                    <RHFTextField name='username' label='Username' />
+                    <RHFTextField name='email' label='Email' req={'red'} />
+                    <RHFTextField name='username' label='Username' req={'red'} />
                     <RHFTextField
                       name='password'
+                      req={'red'}
                       label='Password'
                       placeholder='Enter a strong password'
                       type={password.value ? 'text' : 'password'}
@@ -186,6 +187,7 @@ export default function JwtRegisterView() {
                     }}
                   >
                     <RHFAutocomplete
+                      req={'red'}
                       name='PerCountry'
                       label='Country'
                       placeholder='Choose a country'
@@ -193,6 +195,7 @@ export default function JwtRegisterView() {
                       isOptionEqualToValue={(option, value) => option === value}
                     />
                     <RHFAutocomplete
+                      req={'red'}
                       name='PerState'
                       label='State'
                       placeholder='Choose a State'
@@ -205,6 +208,7 @@ export default function JwtRegisterView() {
                       }
                     />
                     <RHFAutocomplete
+                      req={'red'}
                       name='PerCity'
                       label='City'
                       placeholder='Choose a City'
@@ -265,15 +269,16 @@ export default function JwtRegisterView() {
                       md: 'repeat(4, 1fr)',
                     }}
                   >
-                    <RHFTextField name='companyName' label='Company Name' />
+                    <RHFTextField name='companyName' label='Company Name' req={'red'} />
                     <RHFTextField name='companyContact' label='Company Contact No.'
+                                  req={'red'}
                                   onInput={(e) => {
                                     e.target.value = e.target.value.replace(/[^0-9]/g, '');
                                     if (e.target.value.length > 10) {
                                       e.target.value = e.target.value.slice(0, 10);
                                     }
                                   }} />
-                    <RHFTextField name='companyAddress' label='Company Address' />
+                    <RHFTextField name='companyAddress' label='Company Address' req={'red'} />
                     <RHFTextField name='websiteUrl' label='Website URL' />
                   </Box>
                 </Grid>
