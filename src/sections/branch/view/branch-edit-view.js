@@ -2,17 +2,17 @@
 import PropTypes from 'prop-types';
 import Container from '@mui/material/Container';
 import { paths } from 'src/routes/paths';
-import { _userList } from 'src/_mock';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import BranchNewEditForm from '../branch-new-edit-form';
+import { useGetBranch } from '../../../api/branch';
 
 // ----------------------------------------------------------------------
 
 export default function BranchEditView({ id }) {
   const settings = useSettingsContext();
-
-  const currentBranch = _userList.find((user) => user.id === id);
+  const { branch, mutate } = useGetBranch();
+  const currentBranch = branch.find((branch) => branch?._id === id);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -34,7 +34,7 @@ export default function BranchEditView({ id }) {
         }}
       />
 
-      <BranchNewEditForm currentBranch={currentBranch} />
+      {currentBranch && <BranchNewEditForm currentBranch={currentBranch} mutate={mutate} />}
     </Container>
   );
 }

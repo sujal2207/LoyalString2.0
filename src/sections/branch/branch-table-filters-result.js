@@ -10,14 +10,14 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function BranchTableFiltersResult({
-                                                    filters,
-                                                    onFilters,
-                                                    //
-                                                    onResetFilters,
-                                                    //
-                                                    results,
-                                                    ...other
-                                                  }) {
+                                                   filters,
+                                                   onFilters,
+                                                   //
+                                                   onResetFilters,
+                                                   //
+                                                   results,
+                                                   ...other
+                                                 }) {
   const handleRemoveKeyword = useCallback(() => {
     onFilters('name', '');
   }, [onFilters]);

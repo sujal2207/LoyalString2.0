@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
@@ -17,7 +15,7 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 // ----------------------------------------------------------------------
 
 export default function BranchTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  const { name, avatarUrl, company, role, status, email, phoneNumber } = row;
+  const { branch_head, contact, name, type, email, status } = row;
   const confirm = useBoolean();
   const popover = usePopover();
 
@@ -27,10 +25,7 @@ export default function BranchTableRow({ row, selected, onEditRow, onSelectRow, 
         <TableCell padding='checkbox'>
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
-
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
-
           <ListItemText
             primary={name}
             secondary={email}
@@ -41,27 +36,21 @@ export default function BranchTableRow({ row, selected, onEditRow, onSelectRow, 
             }}
           />
         </TableCell>
-
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber}</TableCell>
-
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{company}</TableCell>
-
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
-
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{type}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{branch_head}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{contact}</TableCell>
         <TableCell>
           <Label
             variant='soft'
             color={
-              (status === 'active' && 'success') ||
-              (status === 'pending' && 'warning') ||
-              (status === 'banned' && 'error') ||
+              (status === true && 'success') ||
+              (status === false && 'error') ||
               'default'
             }
           >
-            {status}
+            {status ? 'Active' : 'In Active'}
           </Label>
         </TableCell>
-
         <TableCell align='right' sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
             <Iconify icon='eva:more-vertical-fill' />
