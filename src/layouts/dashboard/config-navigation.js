@@ -66,6 +66,21 @@ export function useNavData() {
   const data = useMemo(
     () => [
       {
+        subheader: t('overview'),
+        items: [
+          {
+            title: t('Dashboard'),
+            path: paths.dashboard.root,
+            icon: ICONS.dashboard,
+          },
+          {
+            title: t('Account'),
+            path: paths.dashboard.general.analytics,
+            icon: ICONS.analytics,
+          },
+        ],
+      },
+      {
         subheader: t('user master'),
         items: [
           // {
